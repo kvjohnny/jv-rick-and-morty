@@ -9,8 +9,8 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterDto;
-import mate.academy.rickandmorty.dto.external.CharacterResponseDataDto;
+import mate.academy.rickandmorty.dto.CharacterDto;
+import mate.academy.rickandmorty.dto.CharacterResponseDataDto;
 import mate.academy.rickandmorty.exception.DataProcessingException;
 import org.springframework.stereotype.Component;
 
@@ -18,21 +18,19 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CharactersClient {
     private static final String BASE_URL =
-            "https://rickandmortyapi.com/api/character?page=%s";
-    private static final int AMOUNT_OF_PAGES = 42;
+            "https://rickandmortyapi.com/api/character?page";
     private final ObjectMapper objectMapper;
+    private final HttpClient httpClient = HttpClient.newHttpClient();
 
     public List<CharacterDto> getAllCharacters() {
         List<CharacterDto> characterDtos = new ArrayList<>();
-        HttpClient httpClient = HttpClient.newHttpClient();
+        String url = BASE_URL;
         try {
-            for (int i = 1; i <= AMOUNT_OF_PAGES; i++) {
-                String url = BASE_URL.formatted(i);
+            while (url != null) {
                 HttpRequest httpRequest = HttpRequest.newBuilder()
                         .GET()
                         .uri(URI.create(url))
                         .build();
-
                 HttpResponse<String> response = httpClient.send(
                         httpRequest, HttpResponse.BodyHandlers.ofString());
                 CharacterResponseDataDto responseDataDto = objectMapper.readValue(
@@ -42,6 +40,7 @@ public class CharactersClient {
                         .stream()
                         .toList();
                 characterDtos.addAll(currentCharacterDtos);
+                url = responseDataDto.getInfo().next();
             }
             return characterDtos;
         } catch (IOException | InterruptedException e) {

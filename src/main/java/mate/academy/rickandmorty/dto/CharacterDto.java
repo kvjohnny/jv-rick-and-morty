@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.dto.external;
+package mate.academy.rickandmorty.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.dto.external;
+package mate.academy.rickandmorty.dto;
 
 import java.util.List;
 import lombok.Getter;
@@ -9,5 +9,6 @@ import lombok.ToString;
 @Setter
 @ToString
 public class CharacterResponseDataDto {
+    private InfoDto info;
     private List<CharacterDto> results;
 }
