@@ -21,7 +21,7 @@ public class CharacterServiceImpl implements CharacterService {
     @Override
     public Character getRandomCharacter() {
         return characterRepository.findById(new Random()
-                        .nextLong(1, characterRepository.count()))
+                        .nextLong(1, characterRepository.count() + 1))
                 .orElseThrow(() -> new DataProcessingException("Can't get random character"));
     }
 

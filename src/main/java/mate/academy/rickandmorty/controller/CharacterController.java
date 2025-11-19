@@ -8,6 +8,7 @@ import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -25,7 +26,7 @@ public class CharacterController {
 
     @Operation(summary = "Get all characters by name", description = "Get all characters by name")
     @GetMapping("/by-name")
-    public List<Character> findAllCharactersByName(String name) {
+    public List<Character> findAllCharactersByName(@RequestParam("name") String name) {
         return characterService.findAllCharactersByName(name);
     }
 }
